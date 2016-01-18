@@ -18,11 +18,11 @@ All done.
 ```
 node dlt-node --dlt-host <host> --dlt-port <port> --port <port>
 ```
-dlt-host: The ip address or hostname where dlt-daemon is running. (default: localhost)
+**dlt-host:** The ip address or hostname where dlt-daemon is running. (default: localhost)
 
-dlt-port: The port where the dlt-daemon is listening (default: 3490)
+**dlt-port:** The port where the dlt-daemon is listening (default: 3490)
 
-port: the port where we should listen for connections (default: 8080)
+**port:** the port where we should listen for connections (default: 8080)
 
 If everything goes smoothly, you should see the following:
 
