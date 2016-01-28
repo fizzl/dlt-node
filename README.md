@@ -34,7 +34,7 @@ node dlt-node --dlt-host <host> --dlt-port <port> --port <port> --websocket --da
 
 **database:** Enable pushing packets into MongoDB. Also enables querying the database.
 
-**database-connection-string:* The string used by MongoClient.connect(). (default: "mongodb://localhost:27017/dltdb")
+**database-connection-string:** The string used by MongoClient.connect(). (default: "mongodb://localhost:27017/dltdb")
 
 If everything goes smoothly, you should see the following:
 
