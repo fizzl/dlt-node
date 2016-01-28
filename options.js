@@ -19,6 +19,9 @@
 exports.DLT_HOST = 'localhost'
 exports.DLT_PORT = 3490
 exports.PORT = 8080
+exports.WEBSOCKET = false;
+exports.DATABASE = false;
+exports.DB_CONNECTION_STRING = "mongodb://localhost:27017/dltdb";
 
 exports.parseCommandLine = function() {
 	process.argv.forEach((val, index, array) => {
@@ -27,10 +30,19 @@ exports.parseCommandLine = function() {
 				exports.DLT_HOST = array[index+1];
 				break;
 			case '--dlt-port':
-				exports.DLT_PORT = array[index+1];
+				exports.DLT_PORT = parseInt(array[index+1]);
 				break;
 			case '--port':
-				exports.PORT = array[index+1];
+				exports.PORT = parseInt(array[index+1]);
+				break;
+			case '--websocket':
+				exports.WEBSOCKET = true;
+				break;
+			case '--database':
+				exports.DATABASE = true;
+				break;
+			case '--database-connection-string':
+				exports.DB_CONNECTION_STRING = array[index+1];
 				break;
 		};
 	});

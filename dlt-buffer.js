@@ -56,7 +56,7 @@ var DltBuffer = function() {
 		var packet = new DltPacket(packetData);
 		
 		// Signal that we have a new packet
-		self.emit('packet', packet);
+		self.emit('packet', packet.values);
 
 		// Discard the used data
 		if(packetLen < bufferLen) {

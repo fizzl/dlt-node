@@ -21,9 +21,12 @@ var Net = require('net');
 var fs = require('fs');
 var express = require('express');
 var WebSocketServer = require('websocket').server;
+var BodyParser = require('body-parser');
 
 var options = require('./options.js');
 var DltBuffer = require('./dlt-buffer.js');
+var DltDatabase = require('./database/dltdatabase.js');
+var FindStreamer = require('./database/findstreamer.js');
 
 options.parseCommandLine();
 var buffer = new DltBuffer();
@@ -38,7 +41,15 @@ client.on('data', (data) => {
 });
 
 buffer.on('packet', (packet) => {
-	// console.log(packet.toJSON(null, 2));
+	if(options.WEBSOCKET) {
+		broadcastToWebSocket(packet);
+	}
+	if(options.DATABASE) {
+		pushToDatabase(packet);
+	}
+});
+
+function broadcastToWebSocket(packet) {
 	var liveConnections = [];
 	for(i=0;i<connections.length;i++) {
 		var con = connections[i];
@@ -48,8 +59,11 @@ buffer.on('packet', (packet) => {
 		}
 	}
 	connections = liveConnections;
-});
+}
 
+function pushToDatabase(packet) {
+	db.insert(packet);
+}
 
 client.on('error', (error) => {
 	console.log(`Error: ${error.toString()}`);
@@ -62,36 +76,53 @@ client.on('close', () => {
 
 // Express server
 var app = express();
+app.use(BodyParser.json());
+app.use(BodyParser.urlencoded({ extended: true }));
+
 var server = app.listen(options.PORT);
 app.use(express.static(__dirname+'/public'));
 
 // Websocket server
-wsServer = new WebSocketServer({
-	httpServer: server,
-	autoAcceptConnections: false
-});
+// TODO: Modularize this
+if(options.WEBSOCKET) {
+	wsServer = new WebSocketServer({
+		httpServer: server,
+		autoAcceptConnections: false
+	});
 
-function originIsAllowed(origin) {
-	return true;
+	function originIsAllowed(origin) {
+		return true;
+	}
+
+	var connections = [];
+	wsServer.on('request', function(request) {
+		if(!originIsAllowed(request.origin)) {
+			request.reject();
+			console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
+			return;
+		}
+		
+		var connection = request.accept('dlt-json', request.origin);
+		connections.push(connection);
+		console.log((new Date()) + ' Connection accepted.');
+		connection.on('message', function(message) {
+			if (message.type === 'utf8') {
+				console.log('Received Message: ' + message.utf8Data);
+			}
+		});
+		connection.on('close', function(reasonCode, description) {
+			console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+		});
+	});
+	console.log('Websockets server initialized.');
 }
 
-var connections = [];
-wsServer.on('request', function(request) {
-	if(!originIsAllowed(request.origin)) {
-		request.reject();
-		console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
-		return;
-	}
+if(options.DATABASE) {
+	var db = new DltDatabase();
+	db.connect();
 	
-	var connection = request.accept('dlt-json', request.origin);
-	connections.push(connection);
-    console.log((new Date()) + ' Connection accepted.');
-    connection.on('message', function(message) {
-        if (message.type === 'utf8') {
-            console.log('Received Message: ' + message.utf8Data);
-        }
-    });
-    connection.on('close', function(reasonCode, description) {
-        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
-    });
-});
+	app.post('/api/find.json', function(req, res) {
+		var streamer = new FindStreamer(req, res, db, req.body);
+		streamer.execute();
+	});
+}
