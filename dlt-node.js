@@ -62,7 +62,7 @@ function broadcastToWebSocket(packet) {
 }
 
 function pushToDatabase(packet) {
-	db.insert(packet);
+	db.insert(packet.values);
 }
 
 client.on('error', (error) => {
