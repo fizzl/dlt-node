@@ -1,8 +1,14 @@
-# dlt-node 0.2.0
+# dlt-node 0.3.0
 Implementation of the AUTOSAR Diagnostic Log and Trace protocol in Node.js.
 
 ## Version history
-**0.2.0** Initial release
+*0.3.0** Librarify
+* Port to EcmaScript 6
+* Minimize dependencies
+* Remove all actual client and database code
+* Add example
+
+*0.2.0** Initial release
 * Possibility to push packets into MongoDB
 * Possibility to query said database using JSON POST queries
 
@@ -11,3 +17,4 @@ Implementation of the AUTOSAR Diagnostic Log and Trace protocol in Node.js.
 * Protocol extraction
 * Express based web server to serve UI files
 * Websockets to serve decoded dlt packets
+
