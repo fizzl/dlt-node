@@ -16,33 +16,31 @@
   * 
   * Copyright Lassi Marttala, Maxpower (C) 2016
   */
+const binary = require('binary');
 
-const util = require('util');
-var binary = require('binary');
+class DltExtendedHeader {
+	constructor(buffer) {
+        this.data = buffer;
+        this.data.offset = 0;
 
-var DltExtendedHeader = function(buffer) {
-	self = this;
-
-	this.data = buffer;
-	this.data.offset=0;
-
-	this.values = binary.parse(this.data.buffer)
-	.word8('MessageInfo')
-	.tap(function(vars) {
-		vars.Verbose = vars.MessageInfo & module.exports.FLAG_Verbose;
-		vars.MessageType = (vars.MessageInfo & module.exports.FLAG_MessageTypeMask) >> 1;
-		vars.MessageTypeInfo = (vars.MessageInfo & module.exports.FLAG_MessageTypeInfoMask) >> 4;
-	})
-	.word8('NumberOfArguments')
-	.buffer('AppId', 4)
-	.tap(function(vars) {
-		vars.AppId = vars.AppId.toString('ascii');
-	})
-	.buffer('ContextId', 4)
-	.tap(function(vars) {
-		vars.ContextId = vars.ContextId.toString('ascii');
-	})
-	.vars;
+        this.values = binary.parse(this.data.buffer)
+            .word8('MessageInfo')
+            .tap(function (vars) {
+                vars.Verbose = vars.MessageInfo & module.exports.FLAG_Verbose;
+                vars.MessageType = (vars.MessageInfo & module.exports.FLAG_MessageTypeMask) >> 1;
+                vars.MessageTypeInfo = (vars.MessageInfo & module.exports.FLAG_MessageTypeInfoMask) >> 4;
+            })
+            .word8('NumberOfArguments')
+            .buffer('AppId', 4)
+            .tap(function (vars) {
+                vars.AppId = vars.AppId.toString('ascii');
+            })
+            .buffer('ContextId', 4)
+            .tap(function (vars) {
+                vars.ContextId = vars.ContextId.toString('ascii');
+            })
+            .vars;
+    }
 }
 
 module.exports = DltExtendedHeader;
