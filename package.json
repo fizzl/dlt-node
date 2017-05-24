@@ -1,0 +1,14 @@
+{
+  "name": "dlt-node",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bytebuffer": "5.0.1",
+    "binary": "0.3.0"
+  },
+  "scripts": {
+    "start": "node examples/client.js"
+  },
+  "devDependencies": {
+  }
+}
