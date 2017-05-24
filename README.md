@@ -2,7 +2,15 @@
 Implementation of the AUTOSAR Diagnostic Log and Trace protocol in node.js.
 
 ## Usage
+    const DltNode = require('dlt-node');
+    const buffer = new DltNode.DltBuffer();
+    buffer.on('packet', (packet) => {
+    	// Do stuff with packet
+    });
 
+    buffer.buffer(DLT_STREAM_DATA_HERE);
+
+See examples/client.js for example how to parse from dlt daemon.
 
 ## License
 This program is free software: you can redistribute it and/or modify
