@@ -22,7 +22,7 @@ const Net = require('net');
 const fs = require('fs');
 
 // Parser buffer which wraps the protocol and parses packets
-const DltBuffer = require('/../dlt-buffer.js');
+const DltBuffer = require(__dirname+'/../dlt-buffer.js');
 const buffer = new DltBuffer();
 
 // Connect to Dlt Daemon via TCP. Edit the port and host here if you need to
@@ -43,7 +43,7 @@ buffer.on('packet', (packet) => {
 
 // When Dlt Daemon connection reports and error, print it to stderr
 client.on('error', (error) => {
-	console.err(error);
+	console.error(error);
 });
 
 // When Dlt Daemon connection has been closed, exit client
