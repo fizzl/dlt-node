@@ -20,7 +20,7 @@
 const EventEmitter = require('events');
 const util = require('util');
 const ByteBuffer = require('bytebuffer');
-const DltPacket = require('/../protocol/dltpacket.js');
+const DltPacket = require(__dirname+'/protocol/dltpacket.js');
 
 class DltBuffer extends EventEmitter {
 	constructor() {
