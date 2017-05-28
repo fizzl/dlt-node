@@ -48,7 +48,7 @@ class DltBuffer extends EventEmitter {
 		
 		// Not a complete packet in buffer
 		if(packetLen > bufLen) {
-			buffer.offset = bufLen;
+			this.buf.offset = bufLen;
 			return false;
 		}
 		// Copy the packet data from buffer
@@ -58,12 +58,12 @@ class DltBuffer extends EventEmitter {
 		const packet = new DltPacket(packetData);
 		
 		// Signal that we have a new packet
-		self.emit('packet', packet);
+		this.emit('packet', packet);
 
 		// Discard the used data
 		if(packetLen < bufLen) {
 			this.buf = this.buf.copy(packetLen, bufLen);
-			buffer.offset = bufLen - packetLen;
+			this.buf.offset = bufLen - packetLen;
 		}
 		else {		
 			this.buf.offset = 0;
