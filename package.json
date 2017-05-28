@@ -1,7 +1,7 @@
 {
   "name": "dlt-node",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "bytebuffer": "5.0.1",
     "binary": "0.3.0"
