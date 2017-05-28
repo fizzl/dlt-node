@@ -71,12 +71,7 @@ class DltPayloadArgument {
                 else if(vars.TypeInfo & module.exports.FLAG_TypeBoolean) {
                     this.word8('Data');
                     self.length++;
-                    if(vars.Data !== 0) {
-                        vars.Data = true;
-                    }
-                    else {
-                        vars.Data = false;
-                    }
+                    vars.Data = vars.Data !== 0;
                 }
 
                 else if(vars.TypeInfo & module.exports.FLAG_TypeUnsignedInteger ||
