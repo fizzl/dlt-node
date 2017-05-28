@@ -25,7 +25,7 @@ class DltExtendedHeader {
 
         this.values = binary.parse(this.data.buffer)
             .word8('MessageInfo')
-            .tap(function (vars) {
+            .tap(vars =>{
                 vars.Verbose = vars.MessageInfo & module.exports.FLAG_Verbose;
                 vars.MessageType = (vars.MessageInfo & module.exports.FLAG_MessageTypeMask) >> 1;
                 vars.MessageTypeInfo = (vars.MessageInfo & module.exports.FLAG_MessageTypeInfoMask) >> 4;
