@@ -23,7 +23,6 @@ const DltPayload = require('./dltpayload.js');
 
 class DltPacket {
 	constructor(buffer) {
-        this.isParsed = false;
         this.data = buffer;
         this.length = buffer.limit;
         this.values = {
@@ -62,11 +61,10 @@ class DltPacket {
             const payloadPacket = this.data.copy(start, end);
             this.values.Payload = (new DltPayload(payloadPacket, this)).values;
         }
-
-        this.toJSON = function(replacer, space) {
-            return JSON.stringify(this.values, replacer, space);
-        }
-	}
+    }
+	toJSON(replacer, space) {
+        return JSON.stringify(this.values, replacer, space);
+    }
 }
 
 module.exports = DltPacket;

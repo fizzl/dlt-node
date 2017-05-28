@@ -20,6 +20,7 @@ const binary = require('binary');
 
 class DltPayloadArgument {
 	constructor(buffer) {
+	    const self = this;
         this.data = buffer;
         this.data.offset=0;
         this.length = 4;

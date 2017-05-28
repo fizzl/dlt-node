@@ -50,7 +50,7 @@ class DltPayload {
         if(packet.values.StandardHeader.UseExtendedHeader &&
             packet.values.ExtendedHeader.Verbose) {
             while(this.data.offset < this.data.limit) {
-                newPayload = new DltPayloadArgument(this.data.copy());
+                const newPayload = new DltPayloadArgument(this.data.copy());
                 this.data.offset += newPayload.length;
                 this.values.Arguments.push(newPayload.values);
             }

@@ -38,7 +38,7 @@ client.on('data', (data) => {
 
 // When parser buffer finds a packet, print it to console
 buffer.on('packet', (packet) => {
-	console.log(Date.now(), ':', packet);
+	console.log(Date.now(), ':', packet.toJSON(null, 2));
 });
 
 // When Dlt Daemon connection reports and error, print it to stderr
