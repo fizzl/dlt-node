@@ -20,10 +20,10 @@
 // Standard node libraries
 const Net = require('net');
 const fs = require('fs');
+const Dlt = require(__dirname+'/../');
 
 // Parser buffer which wraps the protocol and parses packets
-const DltBuffer = require(__dirname+'/../dlt-buffer.js');
-const buffer = new DltBuffer();
+const buffer = new Dlt.DltBuffer();
 
 // Connect to Dlt Daemon via TCP. Edit the port and host here if you need to
 const client = new Net.connect(3490, 'localhost',
